@@ -8,8 +8,8 @@ const brandsServices = new BrandsServices;
 class BrandsController {
     async getBrandWithMoreModelsController (_, response: Response): Promise<Response> {
         const brandsList = await brandsServices.getBrandService();
-        brandsManipulator.brandWithMoreModelsHelper(brandsList);
-        return response.send(brandsList);
+        const mordeModelsBrands = brandsManipulator.brandWithMoreModelsHelper(brandsList);
+        return response.json({'brand':`${mordeModelsBrands}`});
     }
 };
 
