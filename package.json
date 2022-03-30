@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "server": "json-server --watch src/database/carlist-brand-models.json",
-    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/index.ts"
+    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/index.ts",
+    "inspect": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/index.ts"
   },
   "keywords": [],
   "author": "",
