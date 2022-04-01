@@ -6,10 +6,15 @@ const brandsManipulator = new BrandsManipulator;
 const brandsServices = new BrandsServices;
 
 class BrandsController {
-    async getBrandWithMoreModelsController (_, response: Response): Promise<Response> {
+    public async getBrandWithMoreModelsController (_, response: Response): Promise<Response> {
         const brandsList = await brandsServices.getBrandService();
         const mordeModelsBrands = brandsManipulator.brandWithMoreModelsHelper(brandsList);
-        return response.json({'brand':`${mordeModelsBrands}`});
+        return response.send(mordeModelsBrands);
+    }
+    public async getBrandWithLessModelsController(_, response:Response): Promise<Response>{
+        const brandsList = await brandsServices.getBrandService();
+        const lessModelsBrands = brandsManipulator.brandWithLessModelsHelper(brandsList);
+        return response.send(lessModelsBrands);
     }
 };
 
