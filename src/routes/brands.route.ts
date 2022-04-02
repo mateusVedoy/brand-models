@@ -7,6 +7,7 @@ const brandsRouter = Router();
 
 brandsRouter.get("/brands/more-models", brandsController.getBrandWithMoreModelsController);
 brandsRouter.get("/brands/less-models", brandsController.getBrandWithLessModelsController);
+brandsRouter.get("/brands/more-models-list", brandsController.getBrandListWithMoreModelsByAmmounController);
 
 export { brandsRouter };
 

@@ -1,3 +1,4 @@
+import { response } from "express";
 
 class BrandsManipulator {
 
@@ -15,29 +16,38 @@ class BrandsManipulator {
     public brandWithMoreModelsHelper(brands) {
         let sizeOf = 0;
         let modelsBrands = [];
-        this.brandSortHelper(brands).forEach(brand => {
-            if(brand.models.length > sizeOf) {
-                sizeOf = brand.models.length;
-                modelsBrands.push(this.brandsManipulatorResponseModel(brand.brand, brand.models.length));
-            }else if(brand.models.length == sizeOf){
-                modelsBrands.push(this.brandsManipulatorResponseModel(brand.brand, brand.models.length));
+        this.brandSortHelper(brands).forEach(({brand, models}) => {
+            if(models.length > sizeOf) {
+                sizeOf = models.length;
+                modelsBrands.push(this.brandsManipulatorResponseModel(brand, models.length));
+            }else if(models.length == sizeOf){
+                modelsBrands.push(this.brandsManipulatorResponseModel(brand, models.length));
             }
         });
         return modelsBrands;
     };
+
     public brandWithLessModelsHelper(brands){
         let modelsBrands = [];
         this.brandSortHelper(brands).reverse();
         let sizeOf = brands[0].models.length;
-        brands.forEach(brand => {
-            if(brand.models.length < sizeOf) {
-                sizeOf = brand.models.length;
-                modelsBrands.push(this.brandsManipulatorResponseModel(brand.brand, brand.models.length));
-            }else if(brand.models.length == sizeOf){
-                modelsBrands.push(this.brandsManipulatorResponseModel(brand.brand, brand.models.length));
+        brands.forEach(({brand, models}) => {
+            if(models.length < sizeOf) {
+                sizeOf = models.length;
+                modelsBrands.push(this.brandsManipulatorResponseModel(brand, models.length));
+            }else if(models.length == sizeOf){
+                modelsBrands.push(this.brandsManipulatorResponseModel(brand, models.length));
             }
         });
         return modelsBrands;
+    }
+
+    public brandListWithMoreModelsByAmmountHelper(ammount, brands){
+        let brandListArr = [];
+        this.brandSortHelper(brands).slice(0, ammount).forEach(({brand, models}) => {
+            brandListArr.push(this.brandsManipulatorResponseModel(brand, models.length));
+        });
+        return brandListArr;
     }
 };
 
