@@ -24,6 +24,13 @@ class BrandsController {
         const moreModelsByAmmount = brandsManipulator.brandListWithMoreModelsByAmmountHelper(ammount, brandsList);
         return response.send(moreModelsByAmmount);
     }
+
+    public async getBrandListWithLessModelsByAmmounController(request: Request, response: Response): Promise<Response> {
+        let { ammount } = request.query;
+        const brandsList = await brandsServices.getBrandService();
+        const moreModelsByAmmount = brandsManipulator.brandListWithLessModelsByAmmountHelper(ammount, brandsList);
+        return response.send(moreModelsByAmmount);
+    }
 };
 
 export { BrandsController }
