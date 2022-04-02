@@ -5,11 +5,15 @@ class BrandsManipulator {
         return brands.sort((pre, pos) => pos.models.length - pre.models.length);
     }
 
-    private brandsManipulatorResponseModel(brand, nbrOfModels) {
-        return {
-            'brand': brand,
-            'number of models': nbrOfModels
-        }
+    private brandsResponseModelHelper(brands) {
+        let brandsModel = [];
+        brands.forEach(({brand, models}) => {
+            brandsModel.push({
+                'brand': brand,
+                'number of models': models.length
+            });
+        });        
+        return brandsModel;
     }
 
     private brandListByAmmountHelper(brands, ammount, reverse?:Boolean) {
@@ -20,10 +24,25 @@ class BrandsManipulator {
         }else{
             brandsAndModels = this.brandSortHelper(brands)
         }
-        brandsAndModels.slice(0, ammount).forEach(({ brand, models }) => {
-            brandListArr.push(this.brandsManipulatorResponseModel(brand, models.length));
+        // brandsAndModels.slice(0, ammount).forEach(({ brand, models }) => {
+        //     brandListArr.push(this.brandsManipulatorResponseModel(brand, models.length));
+        // });
+        // return brandListArr;
+        return brandsAndModels.slice(0, ammount);
+    }
+
+    private orderBrandsByAlphabeticalHelper(brands){
+        brands.sort((pre, pos) => {
+            if((pre.models.length == pos.models.length) && (pre.brand < pos.brand)){
+                return -1;
+            }else if((pre.models.length == pos.models.length) && (pre.brand > pos.brand)){
+                return 1
+            }else {
+                return 0
+            }
         });
-        return brandListArr;
+
+        return brands;
     }
 
     public brandWithMoreModelsHelper(brands) {
@@ -32,9 +51,9 @@ class BrandsManipulator {
         this.brandSortHelper(brands).forEach(({ brand, models }) => {
             if (models.length > sizeOf) {
                 sizeOf = models.length;
-                modelsBrands.push(this.brandsManipulatorResponseModel(brand, models.length));
+                modelsBrands.push(this.brandsResponseModelHelper(brand, models.length));
             } else if (models.length == sizeOf) {
-                modelsBrands.push(this.brandsManipulatorResponseModel(brand, models.length));
+                modelsBrands.push(this.brandsResponseModelHelper(brand, models.length));
             }
         });
         return modelsBrands;
@@ -47,20 +66,24 @@ class BrandsManipulator {
         brands.forEach(({ brand, models }) => {
             if (models.length < sizeOf) {
                 sizeOf = models.length;
-                modelsBrands.push(this.brandsManipulatorResponseModel(brand, models.length));
+                modelsBrands.push(this.brandsResponseModelHelper(brand, models.length));
             } else if (models.length == sizeOf) {
-                modelsBrands.push(this.brandsManipulatorResponseModel(brand, models.length));
+                modelsBrands.push(this.brandsResponseModelHelper(brand, models.length));
             }
         });
         return modelsBrands;
     }
 
     public brandListWithMoreModelsByAmmountHelper(ammount, brands) {
-        return this.brandListByAmmountHelper(brands, ammount, false);
+        let brandList = this.brandListByAmmountHelper(brands, ammount, false);
+        let brandListByAlphabetical = this.orderBrandsByAlphabeticalHelper(brandList);
+        return this.brandsResponseModelHelper(brandListByAlphabetical);
     }
 
     public brandListWithLessModelsByAmmountHelper(ammount, brands) {
-        return this.brandListByAmmountHelper(brands, ammount, true);
+        let brandList = this.brandListByAmmountHelper(brands, ammount, true);
+        let brandListByAlphabetical = this.orderBrandsByAlphabeticalHelper(brandList);
+        return this.brandsResponseModelHelper(brandListByAlphabetical);
     }
 };
 
