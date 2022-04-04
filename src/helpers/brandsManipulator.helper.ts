@@ -6,38 +6,33 @@ class BrandsManipulator {
     }
 
     private brandsResponseModelHelper(brands) {
-        let brandsModel = [];
+        let brandList = [];
         brands.forEach(({brand, models}) => {
-            brandsModel.push({
+            brandList.push ({
                 'brand': brand,
                 'number of models': models.length
             });
-        });        
-        return brandsModel;
+        });
+        return brandList;
     }
 
-    private brandListByAmmountHelper(brands, ammount, reverse?:Boolean) {
+    private brandListByAmmountHelper(brands, ammount, reverse?: Boolean) {
         let brandsAndModels;
-        let brandListArr = [];
-        if(reverse){
+        if (reverse) {
             brandsAndModels = this.brandSortHelper(brands).reverse();
-        }else{
+        } else {
             brandsAndModels = this.brandSortHelper(brands)
         }
-        // brandsAndModels.slice(0, ammount).forEach(({ brand, models }) => {
-        //     brandListArr.push(this.brandsManipulatorResponseModel(brand, models.length));
-        // });
-        // return brandListArr;
         return brandsAndModels.slice(0, ammount);
     }
 
-    private orderBrandsByAlphabeticalHelper(brands){
+    private orderBrandsByAlphabeticalHelper(brands) {
         brands.sort((pre, pos) => {
-            if((pre.models.length == pos.models.length) && (pre.brand < pos.brand)){
+            if ((pre.models.length == pos.models.length) && (pre.brand < pos.brand)) {
                 return -1;
-            }else if((pre.models.length == pos.models.length) && (pre.brand > pos.brand)){
+            } else if ((pre.models.length == pos.models.length) && (pre.brand > pos.brand)) {
                 return 1
-            }else {
+            } else {
                 return 0
             }
         });
@@ -48,30 +43,30 @@ class BrandsManipulator {
     public brandWithMoreModelsHelper(brands) {
         let sizeOf = 0;
         let modelsBrands = [];
-        this.brandSortHelper(brands).forEach(({ brand, models }) => {
-            if (models.length > sizeOf) {
-                sizeOf = models.length;
-                modelsBrands.push(this.brandsResponseModelHelper(brand, models.length));
-            } else if (models.length == sizeOf) {
-                modelsBrands.push(this.brandsResponseModelHelper(brand, models.length));
+        this.brandSortHelper(brands).forEach(brand => {
+            if (brand.models.length > sizeOf) {
+                sizeOf = brand.models.length;
+                modelsBrands.push(brand);
+            } else if (brand.models.length == sizeOf) {
+                modelsBrands.push(brand);
             }
         });
-        return modelsBrands;
+        return this.brandsResponseModelHelper(modelsBrands);
     };
 
     public brandWithLessModelsHelper(brands) {
         let modelsBrands = [];
         this.brandSortHelper(brands).reverse();
         let sizeOf = brands[0].models.length;
-        brands.forEach(({ brand, models }) => {
-            if (models.length < sizeOf) {
-                sizeOf = models.length;
-                modelsBrands.push(this.brandsResponseModelHelper(brand, models.length));
-            } else if (models.length == sizeOf) {
-                modelsBrands.push(this.brandsResponseModelHelper(brand, models.length));
+        brands.forEach(brand => {
+            if (brand.models.length < sizeOf) {
+                sizeOf = brand.models.length;
+                modelsBrands.push(brand);
+            } else if (brand.models.length == sizeOf) {
+                modelsBrands.push(brand);
             }
         });
-        return modelsBrands;
+        return this.brandsResponseModelHelper(modelsBrands);
     }
 
     public brandListWithMoreModelsByAmmountHelper(ammount, brands) {
@@ -84,6 +79,19 @@ class BrandsManipulator {
         let brandList = this.brandListByAmmountHelper(brands, ammount, true);
         let brandListByAlphabetical = this.orderBrandsByAlphabeticalHelper(brandList);
         return this.brandsResponseModelHelper(brandListByAlphabetical);
+    }
+
+    public searchBrandByName(brands, brandName) {
+        let search;
+        for (let i = 0; i < brands.length; i++) {
+            if (brands[i].brand.toLowerCase() == `${brandName.toLowerCase()}`) {
+                search = brands[i].models;
+                break;
+            } else {
+                search = "Unregistered brand!";
+            }
+        }
+        return search;
     }
 };
 

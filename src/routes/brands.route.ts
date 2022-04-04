@@ -11,6 +11,8 @@ brandsRouter.get("/brands/more-models-list", brandsController.
 getBrandListWithMoreModelsByAmmounController);
 brandsRouter.get("/brands/less-models-list", brandsController.
 getBrandListWithLessModelsByAmmounController);
+brandsRouter.get("/brands/search-models", brandsController.
+getBrandModelsByBrandNameController);
 
 export { brandsRouter };
 
